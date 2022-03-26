@@ -140,9 +140,9 @@ class RGBGenerator(QWidget):
             x = round((key.x + key.width / 2.0) / xmax * 224.0)
             y = 0
             if self.light_pos == 0:
-                y = round((key.y + key.height / 5.0 * 1.2 * 64.0) / ymax)
+                y = round((key.y + key.height / 5.0 * 1.2) / ymax * 64.0)
             else:
-                y = round((key.y + key.height / 5.0 * 3.8 * 64.0) / ymax)
+                y = round((key.y + key.height / 5.0 * 3.8) / ymax * 64.0)
             res.append("{" + "{xx}, {yy}".format(xx = x, yy = y) + "}, ")
         res.append("\n\t}, {\n")
 
