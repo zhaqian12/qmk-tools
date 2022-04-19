@@ -47,7 +47,8 @@ class MainWindow(QMainWindow):
             'QMK Tools {}<br><br>'
             '自动生成初始的VIA JSON和QMK RGB MATRIX. <br><br>'
             '使用前请进行检查与修改!!! <br><br>'
-            '<a href="https://github.com/zhaqian12/qmk-tools/">https://github.com/zhaqian12/qmk-tools/</a>'
+            '该工具的导入json示例详见: <br><br>'
+            '<a href="https://github.com/zhaqian12/qmk-tools/tree/main/test/">https://github.com/zhaqian12/qmk-tools/tree/main/test/</a>'
             .format(self.appctx.build_settings["version"])
         )
 

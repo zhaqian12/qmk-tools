@@ -131,10 +131,14 @@ class ViaGenerator(QWidget):
 
     def generate_json(self):
         data = self.edit.toPlainText()
-        build_json = json.loads(data)
-        kb = self.get_keyboard_info(build_json)
-        kbjs = self.generate_keymap_json(kb)
-        self.generate_via_json(kb, kbjs)
+        try:
+            build_json = json.loads(data)
+            kb = self.get_keyboard_info(build_json)
+            kbjs = self.generate_keymap_json(kb)
+            self.generate_via_json(kb, kbjs)
+        except(Exception):
+            QMessageBox.warning(self, "QMK Tools", "生成via json失败,请检查json是否正确", QMessageBox.Yes)
+            return
 
 
     def get_keyboard_info(self, json):

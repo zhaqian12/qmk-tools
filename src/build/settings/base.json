@@ -2,5 +2,5 @@
     "app_name": "QMK-Tools",
     "author": "Zhaqian",
     "main_module": "src/main/python/main.py",
-    "version": "0.0.1"
+    "version": "0.0.2"
 }
