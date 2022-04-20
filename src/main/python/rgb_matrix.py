@@ -1,5 +1,4 @@
-from PyQt5 import QtCore
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, QSize
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QDialog,\
      QPlainTextEdit, QSizePolicy, QFrame, QPushButton, QRadioButton, QMessageBox, QGroupBox
 
@@ -83,7 +82,7 @@ class RGBGenerator(QWidget):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_import.sizePolicy().hasHeightForWidth())
         self.btn_import.setSizePolicy(sizePolicy)
-        self.btn_import.setMinimumSize(QtCore.QSize(0, 30))
+        self.btn_import.setMinimumSize(QSize(0, 30))
         self.btn_import.setText(tr("RGBGenerator", "导入json"))
         self.hlayout2.addWidget(self.btn_import)
         self.btn_import.clicked.connect(self.import_json)
@@ -91,7 +90,7 @@ class RGBGenerator(QWidget):
         self.btn_generate = QPushButton()
         sizePolicy.setHeightForWidth(self.btn_generate.sizePolicy().hasHeightForWidth())
         self.btn_generate.setSizePolicy(sizePolicy)
-        self.btn_generate.setMinimumSize(QtCore.QSize(0, 30))
+        self.btn_generate.setMinimumSize(QSize(0, 30))
         self.btn_generate.setText(tr("RGBGenerator", "生成RGB矩阵"))
         self.hlayout2.addWidget(self.btn_generate)
         self.btn_generate.clicked.connect(self.generate_matrix)
