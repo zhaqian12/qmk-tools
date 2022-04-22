@@ -23,6 +23,7 @@ class RGBMatrixGenerator():
         kb = serial.deserialize(matrix_json)
         (xmax, ymax) = self.get_x_y_max(kb.keys)
         (keys, rc, rowmax, colmax) = self.get_key_row_col(kb)
+        keys = self.sort_led(keys)
         if led_seq == 0:
             self.generate_matrix_map_left_to_right(rowmax, colmax, rc)
             self.generate_matrix_pos_horizontal(keys, led_pos, xmax, ymax, 0)
@@ -90,6 +91,7 @@ class RGBMatrixGenerator():
             rc[r * colmax + c] = True
         return (keys, rc, rowmax, colmax)
     
+
     def generate_matrix_map_left_to_right(self, rowmax, colmax, rc):
         n = 0
         for r in range(rowmax):
@@ -181,17 +183,13 @@ class RGBMatrixGenerator():
             row_led_num.append(n)
         return row_led_num
 
+
     def generate_matrix_pos_horizontal(self, keys, led_pos, xmax, ymax, counter):
         n = -1
         tmp = []
         for key in keys:
             if (key.row != n):
-                if counter == 1:
-                    for ele in reversed(tmp):
-                        self.res.append(ele)
-                else :
-                    for ele in tmp:
-                        self.res.append(ele)
+                self.append_result(counter, tmp, 1)
                 tmp.clear()
                 if key.row != 0:
                     self.res.append("\n")
@@ -204,31 +202,22 @@ class RGBMatrixGenerator():
             else:
                 y = round((key.y + key.height / 5.0 * 3.8) / ymax * 64.0)
             tmp.append("{" + "{xx}, {yy}".format(xx = x, yy = y) + "}, ")
+
+        if len(tmp):
+            self.append_result(counter, tmp, 1)
         self.res.append("\n\t}, {\n")
+
 
     def generate_matrix_pos_snake(self, keys, led_pos, xmax, ymax, counter):
         n = -1
         tmp = []
         for key in keys:
             if (key.row != n):
-                if n % 2 == 0:
-                    if counter == 0:
-                        for ele in reversed(tmp):
-                            self.res.append(ele)
-                    else :
-                        for ele in tmp:
-                            self.res.append(ele)
-                else :
-                    if counter == 1:
-                        for ele in reversed(tmp):
-                            self.res.append(ele)
-                    else :
-                        for ele in tmp:
-                            self.res.append(ele)
+                n = key.row
+                self.append_result(counter, tmp, n)
                 tmp.clear()
                 if key.row != 0:
                     self.res.append("\n")
-                n = key.row
                 self.res.append("\t\t")
             x = round((key.x + key.width / 2.0) / xmax * 224.0)
             y = 0
@@ -237,4 +226,37 @@ class RGBMatrixGenerator():
             else:
                 y = round((key.y + key.height / 5.0 * 3.8) / ymax * 64.0)
             tmp.append("{" + "{xx}, {yy}".format(xx = x, yy = y) + "}, ")
+        
+        if len(tmp):
+            self.append_result(counter, tmp, n)
         self.res.append("\n\t}, {\n")
+
+
+    def append_result(self, counter, tmp, n):
+        if n % 2 == 0:
+            if counter == 0:
+                for ele in reversed(tmp):
+                    self.res.append(ele)
+            else :
+                for ele in tmp:
+                    self.res.append(ele)
+        else :
+            if counter == 1:
+                for ele in reversed(tmp):
+                    self.res.append(ele)
+            else :
+                for ele in tmp:
+                    self.res.append(ele)
+
+    def sort_led(self, keys):
+        n = 0
+        tmprow = tmpcol = 0
+        for key in keys:
+            if (tmprow != key.row):
+                tmprow = key.row
+                tmpcol = 0
+            if (tmpcol > key.col):
+                keys[n-1],keys[n] = keys[n],keys[n-1]
+            tmpcol = key.col
+            n += 1
+        return keys
